@@ -6,7 +6,7 @@ type Event = 'BROADCAST_EVENT';
 const BROADCAST_EVENT_NAME: Event = 'BROADCAST_EVENT';
 
 const Constants = {
-  MODULE_NAME: 'RNBroadcastReceiver' as const,
+  MODULE_NAME: 'RNHandleBroadcast' as const,
   DATA_PROP: 'data' as const,
   BROADCAST_EVENT_NAME,
 };
