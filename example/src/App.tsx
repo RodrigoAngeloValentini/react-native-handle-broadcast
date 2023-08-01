@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-handle-broadcast';
+import { BroadcastReceiver } from 'react-native-handle-broadcast';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [result, setResult] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    const sub = BroadcastReceiver.addEventListner((d) => setResult(d.data));
+    return () => sub.remove();
   }, []);
 
   return (

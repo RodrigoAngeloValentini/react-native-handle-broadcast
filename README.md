@@ -1,6 +1,6 @@
-# react-native-handle-broadcast
+# react-native-broadcast-receiver
 
-React Native Handle Broadcast
+Native module for handle android broadcast
 
 ## Installation
 
@@ -8,14 +8,36 @@ React Native Handle Broadcast
 npm install react-native-handle-broadcast
 ```
 
-## Usage
+### Usage
+
+#### 1. Listen to broadcast events
 
 ```js
-import { multiply } from 'react-native-handle-broadcast';
+import { BroadcastReceiver } from 'react-native-handle-broadcast';
 
-// ...
+React.useEffect(() => {
+  const sub = BroadcastReceiver.addEventListner((d) =>
+    setScanned((x) => [...x, d.data])
+  );
+  return () => sub.remove();
+}, []);
+```
 
-const result = await multiply(3, 7);
+#### 2. Listen to broadcast events `(with custom intent actions and extraDataKey)`
+
+```js
+import { BroadcastReceiver } from 'react-native-handle-broadcast';
+
+BroadcastReceiver.setIntentActionConfig([
+  { action: 'com.zzzz.yyyy.action', datakey: '<data_key>' },
+]);
+
+React.useEffect(() => {
+  const sub = BroadcastReceiver.addEventListner((data) =>
+    console.log(data);
+  );
+  return () => sub.remove();
+}, []);
 ```
 
 ## Contributing
