@@ -1,3 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.handlebroadcast">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.handlebroadcast">
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 </manifest>
