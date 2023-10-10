@@ -10,17 +10,15 @@ npm install react-native-handle-broadcast
 
 ### Usage
 
-#### 1. Listen to broadcast events
+#### 1. Configure AndroidManifest.xml
 
-```js
-import { BroadcastReceiver } from 'react-native-handle-broadcast';
-
-React.useEffect(() => {
-  const sub = BroadcastReceiver.addEventListner((d) =>
-    setScanned((x) => [...x, d.data])
-  );
-  return () => sub.remove();
-}, []);
+```xml
+<receiver android:name="com.handlebroadcast.BroadcastReceiverReceiver" android:enabled="true" android:exported="true">
+  <intent-filter android:priority="1000">
+    <action android:name="com.zzzz.yyyy.action" />
+    <category android:name="android.intent.category.DEFAULT"></category>
+  </intent-filter>
+</receiver>
 ```
 
 #### 2. Listen to broadcast events `(with custom intent actions and extraDataKey)`
@@ -33,7 +31,7 @@ BroadcastReceiver.setIntentActionConfig([
 ]);
 
 React.useEffect(() => {
-  const sub = BroadcastReceiver.addEventListner((data) =>
+  const sub = BroadcastReceiver.addEventListener((data) =>
     console.log(data);
   );
   return () => sub.remove();
