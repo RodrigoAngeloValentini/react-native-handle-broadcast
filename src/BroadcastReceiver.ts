@@ -25,7 +25,7 @@ class BroadcastReceiver implements t.BroadcastReceiverInterface {
         );
   };
 
-  addEventListner(listener: t.BroadcastEventCallback) {
+  addEventListener(listener: t.BroadcastEventCallback) {
     return nativeEventEmitter.addListener(
       Constants.BROADCAST_EVENT_NAME,
       listener
@@ -38,15 +38,9 @@ class BroadcastReceiver implements t.BroadcastReceiverInterface {
     });
   }
 
-  // Start Region :: Native modules methods
   setIntentActionConfig(args: t.IntentActionConfig) {
     return this._nativeModule.setIntentConfig(transformConfig(args));
   }
-  getPhoneID() {
-    return this._nativeModule.getPhoneID();
-  }
-
-  // Start Region :: Native modules methods
 }
 const receiver = new BroadcastReceiver();
 export { receiver };

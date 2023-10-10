@@ -7,7 +7,7 @@ export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    const sub = BroadcastReceiver.addEventListner((d) => setResult(d.data));
+    const sub = BroadcastReceiver.addEventListener((d) => setResult(d.data));
     return () => sub.remove();
   }, []);
 

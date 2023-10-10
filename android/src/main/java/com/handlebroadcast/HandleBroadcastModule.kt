@@ -1,11 +1,8 @@
 package com.handlebroadcast
 
-import android.annotation.SuppressLint
 import android.content.IntentFilter
-import android.provider.Settings
 import android.util.Log
 import com.facebook.react.BuildConfig
-import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -34,13 +31,6 @@ class HandleBroadcastModule(reactContext: ReactApplicationContext) :
     return cReactContext
   }
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  fun multiply(a: Double, b: Double, promise: Promise) {
-    promise.resolve(a * b)
-  }
-
   @ReactMethod
   fun setIntentConfig(args: ReadableArray, promise: Promise) {
     if (BuildConfig.DEBUG) {
@@ -54,19 +44,6 @@ class HandleBroadcastModule(reactContext: ReactApplicationContext) :
     IntentConfiguration.addToMap(data)
     registerBroadcastReceiver()
     promise.resolve(true)
-  }
-
-  @SuppressLint("HardwareIds")
-  @ReactMethod
-  fun getPhoneID(promise: Promise) {
-    try {
-      val secureId: String = Settings.Secure.getString(
-        getReactContext().contentResolver, Settings.Secure.ANDROID_ID
-      )
-      promise.resolve(Arguments.fromJavaArgs(arrayOf(secureId)))
-    } catch (e: Exception) {
-      promise.reject(RuntimeException("Could not get unique Id"))
-    }
   }
 
   companion object {
@@ -96,19 +73,30 @@ class HandleBroadcastModule(reactContext: ReactApplicationContext) :
     getReactContext().unregisterReceiver(broadcastReceiver)
   }
 
-  //region: LifecycleEventListener
   override fun onHostResume() {
     if (BuildConfig.DEBUG) Log.d(name, "onHostResume: register Application receivers")
-    registerBroadcastReceiver()
+    try {
+      registerBroadcastReceiver()
+    } catch (e: Exception) {
+      // REGISTER ERROR
+    }
   }
 
   override fun onHostPause() {
     if (BuildConfig.DEBUG) Log.d(name, "onHostPause: unregister receivers")
-    unregisterBroadcastReceiver()
+    try {
+      unregisterBroadcastReceiver()
+    } catch (e: Exception) {
+      // UNREGISTER ERROR
+    }
   }
 
   override fun onHostDestroy() {
     if (BuildConfig.DEBUG) Log.d(name, "onHostDestroy: Destroy host")
+    try {
+      unregisterBroadcastReceiver()
+    } catch (e: Exception) {
+      // UNREGISTER ERROR
+    }
   }
-  //endregion
 }
